@@ -71,33 +71,6 @@ public class MainActivity extends AppCompatActivity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client2 = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-    }
-
-
-    // @Override
-    public void setSelectedName(String name) {
-        //Case Two Pane UI
-        if (fr) {
-            detailsfragment detailsFragment = new detailsfragment();
-            Bundle extras = new Bundle();
-            extras.putString("title", (String) getTitle());
-            //  extras.putString("overview",getover);
-            // extras.putString("background",get());
-            detailsFragment.setArguments(extras);
-            //  getFragmentManager().beginTransaction().replace(R.id.frame,detailsFragment).commit();
-        } else {
-            //Case Single Pane UI
-            Intent intent = new Intent(this, Details.class);
-            String title = intent.getStringExtra("title");
-            String image = intent.getStringExtra("background");
-            String overview = intent.getStringExtra("overview");
-            String date = intent.getStringExtra("date");
-            double rr = intent.getDoubleExtra("rate", 0.0);
-
-            //Start details activity
-            startActivity(intent);
-
-        }
 
     }
 

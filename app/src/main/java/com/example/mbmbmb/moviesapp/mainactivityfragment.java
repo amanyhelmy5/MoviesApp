@@ -5,12 +5,12 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.app.Fragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -85,43 +85,20 @@ public class mainactivityfragment extends Fragment {
                 components vv = (components) adapterView.getItemAtPosition(i);
                 boolean tablet = getResources().getBoolean(R.bool.is_tablet);
                 if (tablet) {
-                    /*
-                    Bundle args = new Bundle();
-                    args.putParcelable(Details.DETAIL_URI, contentUri);
 
-                    DetailFragment fragment = new DetailFragment();
-                    fragment.setArguments(args);
-
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.frame, fragment, DETAILFRAGMENT_TAG)
-                            .commit();
-                            */
-                //    getListView().setItemChecked(index, true);
-
-                    // Check what fragment is currently shown, replace if needed.
-                    /*
-                    Details details = (Details)
-                            getFragmentManager().findFragmentById(R.);
-                    if (details == null || details.getShownIndex() != index) {
-                        // Make new fragment to show this selection.
-                        details = Details.newInstance(index);
-
-                        // Execute a transaction, replacing any existing fragment
-                        // with this one inside the frame.
-                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        if (index == 0) {
-                            ft.replace(R.id.details, details);
-                        } else {
-                            ft.replace(R.id.a_item, details);
-                        }
-                        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                        ft.commit();
-                    }
-                    */
+                    detailsfragment detailsFragment = new detailsfragment();
+                    Bundle extras = new Bundle();
+                    extras.putString("title",vv.getTitle());
+                    extras.putString("overview",vv.getOverview());
+                    extras.putString(("data"),vv.getDate());
+                    extras.putString(("rate"), String.valueOf(vv.getRating()));
+                    extras.putString("background",vv.getBackground());
+                    detailsFragment.setArguments(extras);
+                    getFragmentManager().beginTransaction().replace(R.id.frame, detailsFragment).commit();
 
                 }
                 else {
-                    Intent intent = new Intent(getContext(), Details.class);
+                    Intent intent = new Intent(getContext(),Details.class);
                     intent.putExtra("title", vv.getTitle());
                     intent.putExtra("overview", vv.getOverview());
                     intent.putExtra("date", vv.getDate());
