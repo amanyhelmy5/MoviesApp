@@ -24,9 +24,7 @@
         <activity
             android:name=".CustomAdapter"
             android:label="@string/title_activity_custom_adapter"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <!--
              ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -37,7 +35,8 @@
 
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
+        <activity android:name=".detailsfragment"></activity>
     </application>
 
 </manifest>

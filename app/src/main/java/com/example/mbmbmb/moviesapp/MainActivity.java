@@ -1,5 +1,6 @@
 package com.example.mbmbmb.moviesapp;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,7 +23,13 @@ public class MainActivity extends AppCompatActivity {
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
-boolean  fr;
+    boolean fr;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,23 +45,66 @@ boolean  fr;
                         .setAction("Action", null).show();
             }
         });
+
         if (findViewById(R.id.frame) != null) {
-            fr=true;
+            fr = true;
 
+            //   if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE) {
+
+            //if tablet, add detailFragment
+        } else {
+            fr = false;
 
         }
-        else
-        {
-            fr=false;
+//tablet
+        if (null == savedInstanceState) {
+            mainactivityfragment mafrg = new mainactivityfragment();
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.frame, mafrg);
+            ft.commit();
 
         }
+
+        //  mafrg.setArguments(args);
+        //   mafrg.setNameListener(this);
+        // getFragmentManager().beginTransaction().add(R.id.frame,mafrg).commit();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client2 = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
+
+    // @Override
+    public void setSelectedName(String name) {
+        //Case Two Pane UI
+        if (fr) {
+            detailsfragment detailsFragment = new detailsfragment();
+            Bundle extras = new Bundle();
+            extras.putString("title", (String) getTitle());
+            //  extras.putString("overview",getover);
+            // extras.putString("background",get());
+            detailsFragment.setArguments(extras);
+            //  getFragmentManager().beginTransaction().replace(R.id.frame,detailsFragment).commit();
+        } else {
+            //Case Single Pane UI
+            Intent intent = new Intent(this, Details.class);
+            String title = intent.getStringExtra("title");
+            String image = intent.getStringExtra("background");
+            String overview = intent.getStringExtra("overview");
+            String date = intent.getStringExtra("date");
+            double rr = intent.getDoubleExtra("rate", 0.0);
+
+            //Start details activity
+            startActivity(intent);
+
+        }
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-         getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -77,10 +128,13 @@ boolean  fr;
     @Override
     public void onStart() {
         super.onStart();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client2.connect();
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-       // client.connect();
+        // client.connect();
         Action viewAction = Action.newAction(
                 Action.TYPE_VIEW, // TODO: choose an action type.
                 "Main Page", // TODO: Define a title for the content shown.
@@ -91,12 +145,38 @@ boolean  fr;
                 // TODO: Make sure this auto-generated app deep link URI is correct.
                 Uri.parse("android-app://com.example.mbmbmb.moviesapp/http/host/path")
         );
-      //  AppIndex.AppIndexApi.start(client, viewAction);
+        //  AppIndex.AppIndexApi.start(client, viewAction);
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction2 = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.example.mbmbmb.moviesapp/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client2, viewAction2);
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction2 = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.example.mbmbmb.moviesapp/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client2, viewAction2);
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -112,5 +192,10 @@ boolean  fr;
         );
 //        AppIndex.AppIndexApi.end(client, viewAction);
         //client.disconnect();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client2.disconnect();
     }
+
+
 }
