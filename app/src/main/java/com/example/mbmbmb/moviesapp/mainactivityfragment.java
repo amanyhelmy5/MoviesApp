@@ -1,7 +1,9 @@
 package com.example.mbmbmb.moviesapp;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -10,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.app.Fragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,8 +84,8 @@ public class mainactivityfragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 components vv = (components) adapterView.getItemAtPosition(i);
-                boolean tablet = getResources().getBoolean(R.bool.is_tablet);
-                if (tablet) {
+                if ((getActivity().getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE) {
+
 
                     detailsfragment detailsFragment = new detailsfragment();
                     Bundle extras = new Bundle();
@@ -98,7 +99,7 @@ public class mainactivityfragment extends Fragment {
 
                 }
                 else {
-                    Intent intent = new Intent(getContext(),Details.class);
+                    Intent intent = new Intent(getActivity(),Details.class);
                     intent.putExtra("title", vv.getTitle());
                     intent.putExtra("overview", vv.getOverview());
                     intent.putExtra("date", vv.getDate());
