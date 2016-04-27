@@ -9,6 +9,7 @@ public class components {
     String overview;
     double rating;
     String date;
+int id;
 
     public String getBackground() {
         return background;
@@ -58,5 +59,13 @@ public class components {
 
     public void setDate(String date) {
         this.date = date;
+    }
+    public  int  getid()
+    {
+        return id;
+    }
+    public void setid(int id)
+    {
+        this.id=id;
     }
 }

@@ -23,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
-    boolean fr;
+    boolean tablet;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -45,25 +46,31 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        if (findViewById(R.id.Dframe) != null) {
+            tablet= true;
 
-        if (findViewById(R.id.frame) != null) {
-            fr = true;
-
-            //   if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE) {
+          //    if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE) {
 
             //if tablet, add detailFragment
-        } else {
-            fr = false;
+
+              }
+
+        else {
+            tablet = false;
+
 
         }
-//tablet
+         //tablet
+
         if (null == savedInstanceState) {
-            mainactivityfragment mafrg = new mainactivityfragment();
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.frame, mafrg);
-            ft.commit();
-
+            if(tablet) {
+                detailsfragment mafrg = new detailsfragment();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.Dframe, mafrg);
+                ft.commit();
+            }
         }
+
 
         //  mafrg.setArguments(args);
         //   mafrg.setNameListener(this);
@@ -73,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
         client2 = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

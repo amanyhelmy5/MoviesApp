@@ -33,7 +33,7 @@ public class mainactivityfragment extends Fragment {
     String moviesjsonStr = null;
     GridView mygride;
     String sortType="popular";
-
+    boolean tablet;
     public  ArrayList<components> jsmovie (String r)
             throws JSONException
     {
@@ -49,7 +49,7 @@ public class mainactivityfragment extends Fragment {
             String rdata= ay.getString("release_date");
             double vote=ay.optDouble("vote_average");
             String back= ay.getString( "backdrop_path");
-
+          int id=ay.getInt("id");
             components dd= new components();
         dd.setBackground(back);
             dd.setDate(rdata);
@@ -57,6 +57,7 @@ public class mainactivityfragment extends Fragment {
             dd.setPoster(path);
             dd.setTitle(title);
             dd.setRating(vote);
+            dd.setid(id);
             List.add(dd);
 
         }
@@ -78,14 +79,16 @@ public class mainactivityfragment extends Fragment {
         View v=inflater.inflate(R.layout.fragment_main, container, false);
         mygride=(GridView)v.findViewById(R.id.mymovieGride);
 
-
+//View ttt=inflater.inflate(R.layout.trailer_list_item,container,false);
+     //   trailer=(ListView)ttt.findViewById(R.id.video);
        // components vv=(components )
+
         mygride.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 components vv = (components) adapterView.getItemAtPosition(i);
                 if ((getActivity().getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE) {
-
+//tablet
 
                     detailsfragment detailsFragment = new detailsfragment();
                     Bundle extras = new Bundle();
@@ -94,17 +97,25 @@ public class mainactivityfragment extends Fragment {
                     extras.putString(("data"),vv.getDate());
                     extras.putString(("rate"), String.valueOf(vv.getRating()));
                     extras.putString("background",vv.getBackground());
+                    extras.putInt("id", vv.getid());
+
+                   // detailsFragment.getArguments();
                     detailsFragment.setArguments(extras);
-                    getFragmentManager().beginTransaction().replace(R.id.frame, detailsFragment).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.Dframe, detailsFragment).commit();
 
                 }
                 else {
+                    //phone
                     Intent intent = new Intent(getActivity(),Details.class);
                     intent.putExtra("title", vv.getTitle());
                     intent.putExtra("overview", vv.getOverview());
                     intent.putExtra("date", vv.getDate());
                     intent.putExtra("rate", vv.getRating());
                     intent.putExtra("background", vv.getBackground());
+                    intent.putExtra("id", vv.getid());
+                    //Trailer
+                   // intent.putExtra("name", tt.getName());
+                   //intent.putExtra("url", tt.getUrl());
                     //Start details activity
                     startActivity(intent);
                 }
@@ -126,12 +137,12 @@ public class mainactivityfragment extends Fragment {
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
 
-            // Will contain the raw JSON response as a string.
+            // Will contain t-he raw JSON response as a string.
 
 
 
             try {
-                SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
+                SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
 
                 String ss=sharedPreferences.getString(getString(R.string.pref_location_key),"most popular");
                 String api_key="56b97ff259acaff235cab79cbd341154";

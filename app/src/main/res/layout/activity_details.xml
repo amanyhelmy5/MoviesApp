@@ -26,5 +26,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/rab"/>
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:id="@+id/trailer"></ListView>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/reviw"></ListView>
+
 
 </LinearLayout>
