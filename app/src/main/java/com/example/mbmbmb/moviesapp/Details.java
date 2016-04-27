@@ -171,8 +171,6 @@ public class Details extends AppCompatActivity {
     }
 
     public class ReviewJson extends AsyncTask<Void, Void, Void> {
-
-
         public ArrayList<Review> reviewsjsion(String r)
                 throws JSONException {
             ArrayList<Review> List = new ArrayList<>();
@@ -194,13 +192,10 @@ public class Details extends AppCompatActivity {
             return List;
         }
 
-
         @Override
         protected Void doInBackground(Void... voids) {
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
-
-
             try {
 
                 String api_key = "56b97ff259acaff235cab79cbd341154";
