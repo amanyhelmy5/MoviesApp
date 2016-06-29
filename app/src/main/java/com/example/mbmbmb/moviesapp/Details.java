@@ -1,9 +1,14 @@
 package com.example.mbmbmb.moviesapp;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -39,16 +44,36 @@ public class Details extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        Intent intent = getIntent();
-        String title = intent.getStringExtra("title");
+        final Intent intent = getIntent();
+        final String title = intent.getStringExtra("title");
         String image = intent.getStringExtra("background");
         String overview = intent.getStringExtra("overview");
         String date = intent.getStringExtra("date");
-        int id = intent.getIntExtra("id", 0);
-
+        id = intent.getIntExtra("id", 0);
+        String poster=intent.getStringExtra("poster");
         double dd = intent.getDoubleExtra("rate", 0.0);
         setTitle(title);
+        final components k= new components();
+        k.setBackground(image);
+        k.setDate(date);
+        k.setOverview(overview);
+        k.setPoster(poster);
+        k.setid(id);
+        k.setRating(dd);
+        k.setTitle(title);
 
+        final favoirte database=new favoirte(this);
+        final Button kk=(Button) findViewById(R.id.checkb);
+        kk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!database.check(title))
+                {
+                    database.insert(k);
+                }
+            }
+
+        });
         overviewText = (TextView) findViewById(R.id.over);
         dateText = (TextView) findViewById(R.id.rre);
         rating = (RatingBar) findViewById(R.id.rab);
@@ -65,7 +90,29 @@ public class Details extends AppCompatActivity {
         mff.execute();
         ReviewJson kdfs = new ReviewJson();
         kdfs.execute();
-
+        trailer.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
+        review.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
+        trailer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Trailer t=(Trailer) parent.getItemAtPosition(position);
+                Intent i=new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("www.youtube.com/watch?v="+t.getUrl()));
+                startActivity(i.createChooser(i,"use what?"));
+            }
+        });
     }
 
     public class TrailerJson extends AsyncTask<Void, Void, Void> {
@@ -82,6 +129,7 @@ public class Details extends AppCompatActivity {
                 String name = ay.getString("name");
                 String key = ay.getString("key");
                 Trailer t = new Trailer();
+                List.add(t);
                 t.setName(name);
                 t.setUrl(key);
             }
@@ -101,6 +149,7 @@ public class Details extends AppCompatActivity {
 
                 final String moviesURL =
                         " http://api.themoviedb.org/3/movie/" + id + "/videos?api_key=56b97ff259acaff235cab79cbd341154";
+
 
                 URL url = new URL(moviesURL);
 
@@ -182,12 +231,13 @@ public class Details extends AppCompatActivity {
                 String author = ay.getString("author");
                 String content = ay.getString("content");
                 String url = ay.getString("url");
-                int id = ay.getInt("id");
+                String id = ay.getString("id");
                 Review rr = new Review();
                 rr.setAuthor(author);
                 rr.setUrl(url);
                 rr.setContent(content);
                 rr.setId(id);
+                List.add(rr);
             }
             return List;
         }

@@ -9,6 +9,7 @@
         android:numColumns="2"
         android:verticalSpacing="10dp"
         android:horizontalSpacing="10dp"
+        android:background="#eed2ea"
         />
     <TextView
         android:layout_width="match_parent"

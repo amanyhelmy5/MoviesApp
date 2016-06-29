@@ -1,11 +1,15 @@
 package com.example.mbmbmb.moviesapp;
 
 import android.app.Fragment;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -35,7 +39,7 @@ public class detailsfragment extends Fragment {
     String TrailerJson;
     int id;
     ListView trailer;
-ListView review;
+    ListView review;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -45,12 +49,13 @@ ListView review;
 
         // Intent intent = getActivity().getIntent();
         if(bundle != null) {
-            String title = bundle.getString("title");
+            final  String title = bundle.getString("title");
             String image = bundle.getString("background");
             String overview = bundle.getString("overview");
             String date = bundle.getString("date");
-             id=bundle.getInt("id");
+            id=bundle.getInt("id");
             double bb = bundle.getDouble("rate", 0.0);
+            String poster=bundle.getString("poster");
             getActivity().setTitle(title);
             overviewText = (TextView) v.findViewById(R.id.over);
             dateText = (TextView) v.findViewById(R.id.rre);
@@ -67,6 +72,41 @@ ListView review;
             mff.execute();
             ReviewJson kdfs=new ReviewJson();
             kdfs.execute();
+            final components k= new components();
+            k.setBackground(image);
+            k.setDate(date);
+            k.setOverview(overview);
+            k.setPoster(poster);
+            k.setid(id);
+            k.setRating(bb);
+            k.setTitle(title);
+
+            final favoirte database=new favoirte(getActivity());
+            final Button kk=(Button)v.findViewById(R.id.checkb);
+            kk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!database.check(title))
+                    {
+
+
+                        database.insert(k);
+
+
+                    }
+
+
+                }
+            });
+            trailer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Trailer t = (Trailer) parent.getItemAtPosition(position);
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse("www.youtube.com/watch?v=" + t.getUrl()));
+                    startActivity(i.createChooser(i, "use what?"));
+                }
+            });
         }
         return v;
 
@@ -85,6 +125,7 @@ ListView review;
                 String name = ay.getString("name");
                 String key = ay.getString("key");
                 Trailer t = new Trailer();
+                List.add(t);
                 t.setName(name);
                 t.setUrl(key);
             }
@@ -186,12 +227,13 @@ ListView review;
                 String author= ay.getString("author");
                 String content=ay.getString("content");
                 String url =ay.getString("url");
-                int id=ay.getInt("id");
+                String id=ay.getString("id");
                 Review rr=new Review();
                 rr.setAuthor(author);
                 rr.setUrl(url);
                 rr.setContent(content);
                 rr.setId(id);
+                List.add(rr);
             }
             return List;
         }

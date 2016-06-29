@@ -9,40 +9,78 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
 
-    tools:context="com.example.mbmbmb.moviesapp.detailsfragment">
-<ScrollView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-   <LinearLayout
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content">
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/mm"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/over"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/rre"/>
-    <RatingBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/rab"/>
-<ListView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    tools:context="com.example.mbmbmb.moviesapp.detailsfragment"
+    android:background="#e7b6f9"
+    android:weightSum="1">
 
-    android:id="@+id/trailer"></ListView>
 
-    <ListView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/reviw"></ListView>
-</LinearLayout>
-</ScrollView>
+        android:orientation="vertical"
+        android:paddingTop="16dp"
+        android:weightSum="1">
 
+
+        <Button
+            android:text="favorite"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:paddingTop="40dp"
+            android:id="@+id/checkb"
+            android:background="#5beef6"
+            android:layout_weight="8.84"
+            android:layout_gravity="right"
+            android:textColor="#826c6c" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/mm"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/over"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rre"/>
+
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rab"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trailer"
+            android:textSize="40dp"/>
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="43dp"
+
+            android:id="@+id/trailer"
+            android:layout_weight="2.41"></ListView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="40dp"
+            android:text="Review"/>
+
+        <ListView
+
+            android:layout_width="wrap_content"
+            android:layout_height="63dp"
+            android:id="@+id/reviw"
+            android:layout_weight="6.56"></ListView>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </ScrollView>
 </LinearLayout>

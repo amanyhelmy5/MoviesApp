@@ -4,12 +4,12 @@ package com.example.mbmbmb.moviesapp;
  * Created by mbmbmb on 4/27/2016.
  */
 public class Review {
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(String id) {
+        this.id=id;
     }
 
     public String getAuthor() {
@@ -36,7 +36,7 @@ public class Review {
         this.content = content;
     }
 
-    int id;
+    String id;
     String author;
     String url;
     String content;

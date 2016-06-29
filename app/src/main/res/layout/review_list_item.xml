@@ -6,14 +6,16 @@
     <TextView
         android:id="@+id/review_author"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="#626cf4" />
 
     <TextView
+
         android:id="@+id/review_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-         />
+        android:textColor="#383434" />
 
 
 </LinearLayout>

@@ -4,10 +4,14 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -43,15 +47,15 @@ public class mainactivityfragment extends Fragment {
         JSONArray jsonArray=obj.getJSONArray("results");
         for(int i=0 ;i<jsonArray.length() ; i++){
             JSONObject ay=jsonArray.getJSONObject(i);
-                                                                                                                                   String path= ay.getString("poster_path");
+            String path= ay.getString("poster_path");
             String overviewtt= ay.getString("overview");
             String title= ay.getString("title");
             String rdata= ay.getString("release_date");
             double vote=ay.optDouble("vote_average");
             String back= ay.getString( "backdrop_path");
-          int id=ay.getInt("id");
+            int id=ay.getInt("id");
             components dd= new components();
-        dd.setBackground(back);
+            dd.setBackground(back);
             dd.setDate(rdata);
             dd.setOverview(overviewtt);
             dd.setPoster(path);
@@ -74,14 +78,14 @@ public class mainactivityfragment extends Fragment {
     // super.onResume();
 
     public View onCreateView (LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                              Bundle savedInstanceState) {
 
         View v=inflater.inflate(R.layout.fragment_main, container, false);
         mygride=(GridView)v.findViewById(R.id.mymovieGride);
-
+        setHasOptionsMenu(true);
 //View ttt=inflater.inflate(R.layout.trailer_list_item,container,false);
-     //   trailer=(ListView)ttt.findViewById(R.id.video);
-       // components vv=(components )
+        //   trailer=(ListView)ttt.findViewById(R.id.video);
+        // components vv=(components )
 
         mygride.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -94,12 +98,13 @@ public class mainactivityfragment extends Fragment {
                     Bundle extras = new Bundle();
                     extras.putString("title",vv.getTitle());
                     extras.putString("overview",vv.getOverview());
-                    extras.putString(("data"),vv.getDate());
-                    extras.putString(("rate"), String.valueOf(vv.getRating()));
+                    extras.putString(("date"),vv.getDate());
+                    extras.putDouble(("rate"), vv.getRating());
                     extras.putString("background",vv.getBackground());
                     extras.putInt("id", vv.getid());
+                    extras.putString("poster",vv.getPoster());
 
-                   // detailsFragment.getArguments();
+                    // detailsFragment.getArguments();
                     detailsFragment.setArguments(extras);
                     getFragmentManager().beginTransaction().replace(R.id.Dframe, detailsFragment).commit();
 
@@ -113,9 +118,10 @@ public class mainactivityfragment extends Fragment {
                     intent.putExtra("rate", vv.getRating());
                     intent.putExtra("background", vv.getBackground());
                     intent.putExtra("id", vv.getid());
+                    intent.putExtra("poster",vv.getPoster());
                     //Trailer
-                   // intent.putExtra("name", tt.getName());
-                   //intent.putExtra("url", tt.getUrl());
+                    // intent.putExtra("name", tt.getName());
+                    //intent.putExtra("url", tt.getUrl());
                     //Start details activity
                     startActivity(intent);
                 }
@@ -126,6 +132,52 @@ public class mainactivityfragment extends Fragment {
         return v;
     }
 
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu,MenuInflater inflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        super.onCreateOptionsMenu(menu,inflater);
+        inflater.inflate(R.menu.menu_main, menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(getActivity(),SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        if(id==R.id.fav){
+            favoirte database=new favoirte(getActivity());
+            Cursor c=database.retrive();
+            if(c!=null){
+                ArrayList<components> movies=new ArrayList<>();
+                for(int i=0;i<c.getCount();i++)
+                {
+                    components t=new components();
+                    t.setid(c.getInt(1));
+                    t.setTitle(c.getString(2));
+                    t.setRating(c.getFloat(6));
+                    t.setPoster(c.getString(3));
+                    t.setOverview(c.getString(4));
+                    t.setDate(c.getString(5));
+                    t.setBackground(c.getString(7));
+                    movies.add(t);
+                    c.moveToNext();
+                }
+                mygride.setAdapter(new SecondCustomApater(getActivity(),movies));
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     public  class DownaloadMovie extends AsyncTask<Void,Void,Void> {
 
@@ -147,15 +199,15 @@ public class mainactivityfragment extends Fragment {
                 String ss=sharedPreferences.getString(getString(R.string.pref_location_key),"most popular");
                 String api_key="56b97ff259acaff235cab79cbd341154";
 
-              if(ss.equals("most poular")) {
+                if(ss.equals("most poular")) {
 
-                sortType = "popular";
-              }
+                    sortType = "popular";
+                }
                 else if(ss.equals("top rated")) {
-                 sortType="top_rated";
-                  }
+                    sortType="top_rated";
+                }
                 final String  moviesURL =
-            "https://api.themoviedb.org/3/movie/"+sortType+"?api_key="+api_key;
+                        "https://api.themoviedb.org/3/movie/"+sortType+"?api_key="+api_key;
 
 
                 URL url = new URL( moviesURL);
