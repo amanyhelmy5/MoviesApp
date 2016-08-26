@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 
-public class TrailerCustomApater extends BaseAdapter {
+public class  TrailerCustomApater extends BaseAdapter {
     private Context contxt;
 
     public ArrayList<Trailer> trailers;
